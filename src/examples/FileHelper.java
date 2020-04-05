@@ -9,12 +9,15 @@ import java.util.List;
 
 public class FileHelper {
 
+	private static BufferedReader buffer;
+	private static BufferedReader buffer2;
+
 	public static String loadMetaData() {
 		StringBuffer characterData = new StringBuffer();
 		File file = new File("resource/got_meta_data.txt");
 
 		try {
-			BufferedReader buffer = new BufferedReader(new FileReader(file));
+			buffer = new BufferedReader(new FileReader(file));
 			String aLine;
 			while ((aLine = buffer.readLine()) != null) {
 				characterData.append(aLine);
@@ -37,9 +40,9 @@ public class FileHelper {
 		File file = new File(pathname);
 
 		try {
-			BufferedReader buffer = new BufferedReader(new FileReader(file));
+			buffer2 = new BufferedReader(new FileReader(file));
 			String aLine;
-			while ((aLine = buffer.readLine()) != null) {
+			while ((aLine = buffer2.readLine()) != null) {
 				messages.add(aLine);
 			}
 		} catch (IOException e) {
