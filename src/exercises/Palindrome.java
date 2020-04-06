@@ -14,13 +14,13 @@ public class Palindrome {
 		fail("no yet implemented");
 	}
 
-	boolean testWord(String word) {
+	boolean wordExist(String word) {
 		return loadWords().contains(word);
 	}
 	
 	boolean isPalindrome(String candidate) {
 				
-		if (testWord(candidate)) {
+		if (wordExist(candidate)) {
 		
 		String word = "";
 		String character;

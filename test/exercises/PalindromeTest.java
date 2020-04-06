@@ -11,14 +11,14 @@ class PalindromeTest {
 	// 2. Test that a word exists in the dictionary 
 	
 	@Test
-	void testWord() {
-		assertTrue(testPalindrome.testWord("civic"));
+	void testWordExist() throws Exception {
+		assertTrue(testPalindrome.wordExist("civic"));
 	}
 
 	// 3. Test that a word is a palindrome
 	
 	@Test
-	void isPalindromeTest() {
+	void isPalindromeTest() throws Exception {
 		assertTrue(testPalindrome.isPalindrome("level"));
 	}
 
