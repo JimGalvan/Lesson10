@@ -15,6 +15,13 @@ class EncryptorTest {
 	void testEncryptWord() throws Exception {
 		assertEquals("ccc", Encryptor.encrypt("aaa"));
 		assertEquals("Lcxc", Encryptor.encrypt("Java"));
+		assertEquals("Lcxc", Encryptor.encrypt("Java"));
+
+	}
+	
+	@Test
+	void testDecrypt() throws Exception {
+		assertEquals("Live long and prosper!", Encryptor.decrypt("Nkxg\"nqpi\"cpf\"rtqurgt#"));
 	}
 	
 	// Exercise: decrypt this sentence: Nkxg"nqpi"cpf"rtqurgt#
