@@ -4,6 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import javax.sound.sampled.AudioInputStream;
@@ -13,12 +14,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import examples.FileHelper;
+
 public class Hangman extends KeyAdapter {
 
 	Stack<String> puzzles = new Stack<String>();
 	ArrayList<JLabel> boxes = new ArrayList<JLabel>();
 	int lives = 9;
 	JLabel livesLabel = new JLabel("" + lives);
+	StringBuilder correctWords = new StringBuilder();
+	int gamesWon = 0;
+	int opportunities = 3;
+
 
 	public static void main(String[] args) {
 		Hangman hangman = new Hangman();
@@ -27,11 +34,12 @@ public class Hangman extends KeyAdapter {
 	}
 
 	private void addPuzzles() {
-		puzzles.push("defenestrate");
-		puzzles.push("fancypants");
-		puzzles.push("elements");
+		
+	for (String word: loadWords()) {
+		puzzles.push(word.toLowerCase());
 	}
-
+	}
+	
 	JPanel panel = new JPanel();
 	private String puzzle;
 
@@ -48,34 +56,73 @@ public class Hangman extends KeyAdapter {
 	}
 
 	private void loadNextPuzzle() {
+		
 		removeBoxes();
 		lives = 9;
 		livesLabel.setText("" + lives);
-		puzzle = puzzles.pop();
-		System.out.println("puzzle is now " + puzzle);
+		
+		if (puzzles.isEmpty()) {
+			System.out.println("No more games, start again");
+			  System.exit(0);
+		} else {
+			puzzle = puzzles.pop();
+		}
+		System.out.println("");
+		System.out.println("New puzzle loaded");
+		System.out.println("Games won: " + gamesWon);		
+		System.out.println("You have: " + opportunities + " opportunities");
+
+
 		createBoxes();
 	}
 
 	public void keyTyped(KeyEvent arg0) {
 		System.out.println(arg0.getKeyChar());
 		updateBoxesWithUserInput(arg0.getKeyChar());
-		if (lives == 0) {
-			playDeathKnell();
-			loadNextPuzzle();
+		
+		if (opportunities == 0) {
+			System.out.println("You have no more opportunities");
+			  System.exit(0);
 		}
+				
+		if (lives == 7) {
+			playDeathKnell();
+			loadNextPuzzle();			
+			System.out.println("You lost game: " + puzzle);
+
+			opportunities--;
+		} 
+		else if (puzzle.equalsIgnoreCase(correctWords.toString())) {
+			gamesWon++;
+			
+			if (puzzles.isEmpty()) {
+				System.out.println("You won " + gamesWon + "games");
+				  System.exit(0);
+				  } 
+			else loadNextPuzzle();	
+			
+			lives = 9;
+		}
+		
+		
 	}
 
 	private void updateBoxesWithUserInput(char keyChar) {
 		boolean gotOne = false;
+		correctWords.setLength(puzzle.length());
+		
 		for (int i = 0; i < puzzle.length(); i++) {
 			if (puzzle.charAt(i) == keyChar) {
+				
 				boxes.get(i).setText("" + keyChar);
 				gotOne = true;
+				
+				correctWords.setCharAt(i, keyChar);
 			}
 		}
 		if (!gotOne)
 			livesLabel.setText("" + --lives);
-	}
+	} 
 
 	void createBoxes() {
 		for (int i = 0; i < puzzle.length(); i++) {
@@ -102,6 +149,10 @@ public class Hangman extends KeyAdapter {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+	
+	public List<String> loadWords() {
+		return FileHelper.loadFileContentsIntoArrayList("resource/words.txt");
 	}
 
 }
