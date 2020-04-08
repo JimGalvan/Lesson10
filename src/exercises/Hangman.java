@@ -23,9 +23,7 @@ public class Hangman extends KeyAdapter {
 	int lives = 9;
 	JLabel livesLabel = new JLabel("" + lives);
 	StringBuilder correctWords = new StringBuilder();
-	int gamesWon = 0;
-	int opportunities = 3;
-
+	int index = 0;
 
 	public static void main(String[] args) {
 		Hangman hangman = new Hangman();
@@ -48,30 +46,32 @@ public class Hangman extends KeyAdapter {
 		JFrame frame = new JFrame("June's Hangman");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel.add(livesLabel);
-		loadNextPuzzle();
+		loadCurrentPuzzle();
 		frame.add(panel);
 		frame.setVisible(true);
 		frame.pack();
 		frame.addKeyListener(this);
 	}
-
-	private void loadNextPuzzle() {
-		
+	
+	private void loadCurrentPuzzle() {
 		removeBoxes();
 		lives = 9;
 		livesLabel.setText("" + lives);
-		
-		if (puzzles.isEmpty()) {
-			System.out.println("No more games, start again");
-			  System.exit(0);
-		} else {
-			puzzle = puzzles.pop();
-		}
+		puzzle = puzzles.peek();
 		System.out.println("");
-		System.out.println("New puzzle loaded");
-		System.out.println("Games won: " + gamesWon);		
-		System.out.println("You have: " + opportunities + " opportunities");
+		System.out.println("New puzzle loaded: " + puzzle);
 
+		createBoxes();	}
+
+	private void loadNextPuzzle() {
+		index++;
+		removeBoxes();
+		lives = 9;
+		livesLabel.setText("" + lives);
+		puzzle = puzzles.pop();
+		puzzle = puzzles.peek();
+		System.out.println("");
+		System.out.println("New puzzle loaded: " + puzzle);
 
 		createBoxes();
 	}
@@ -79,30 +79,21 @@ public class Hangman extends KeyAdapter {
 	public void keyTyped(KeyEvent arg0) {
 		System.out.println(arg0.getKeyChar());
 		updateBoxesWithUserInput(arg0.getKeyChar());
-		
-		if (opportunities == 0) {
-			System.out.println("You have no more opportunities");
-			  System.exit(0);
-		}
-				
+	
 		if (lives == 0) {
 			playDeathKnell();
-			loadNextPuzzle();			
-			System.out.println("You lost game: " + puzzle);
-
-			opportunities--;
+			loadCurrentPuzzle();
 		} 
-		else if (puzzle.equalsIgnoreCase(correctWords.toString())) {
-			gamesWon++;
+		if (puzzle.equalsIgnoreCase(correctWords.toString())) {
+			
+			loadNextPuzzle();	
+			lives = 9;
 			
 			if (puzzles.isEmpty()) {
-				System.out.println("You won " + gamesWon + "games");
-				  System.exit(0);
-				  } 
-			else loadNextPuzzle();	
-			
-			lives = 9;
-		}
+				System.out.println("You won the game"); 
+				System.exit(0);
+				} 
+		} 
 		
 		
 	}
