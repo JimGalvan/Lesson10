@@ -85,7 +85,7 @@ public class Hangman extends KeyAdapter {
 			  System.exit(0);
 		}
 				
-		if (lives == 7) {
+		if (lives == 0) {
 			playDeathKnell();
 			loadNextPuzzle();			
 			System.out.println("You lost game: " + puzzle);
