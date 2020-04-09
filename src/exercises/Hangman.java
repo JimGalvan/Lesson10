@@ -23,7 +23,6 @@ public class Hangman extends KeyAdapter {
 	int lives = 9;
 	JLabel livesLabel = new JLabel("" + lives);
 	StringBuilder correctWords = new StringBuilder();
-	int index = 0;
 
 	public static void main(String[] args) {
 		Hangman hangman = new Hangman();
@@ -64,7 +63,6 @@ public class Hangman extends KeyAdapter {
 		createBoxes();	}
 
 	private void loadNextPuzzle() {
-		index++;
 		removeBoxes();
 		lives = 9;
 		livesLabel.setText("" + lives);
