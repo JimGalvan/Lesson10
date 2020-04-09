@@ -17,6 +17,8 @@ public class validatorTest {
 		assertTrue(validator.email("jimmy-galvan@live.com.mx"));
 		assertTrue(validator.email("jimmy95@outlook.com"));
 		assertTrue(validator.email("john.doe43@domainsample.co.uk"));
+//		assertTrue(validator.email("@ohn.doe43@domainsample.co.uk")); to test syntax //
+
 
 
 	}
